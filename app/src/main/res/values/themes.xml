@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SouthPointCRMS" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/sp_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/sp_orange</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorError">@color/sp_error</item>
+        <item name="android:statusBarColor">@color/sp_blue</item>
+        <item name="android:windowBackground">@color/sp_background</item>
+        <item name="android:textColorPrimary">@color/sp_grey_text</item>
+    </style>
+
+    <!-- Orange call-to-action button -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/sp_orange</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:minHeight">50dp</item>
+    </style>
+
+    <!-- Outlined secondary button (Logout, Choose Photo) -->
+    <style name="Widget.App.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:textColor">@color/sp_blue</item>
+        <item name="android:textStyle">bold</item>
+        <item name="cornerRadius">10dp</item>
+        <item name="android:minHeight">50dp</item>
+    </style>
+
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="android:background">@color/sp_blue</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="navigationIconTint">@color/white</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionMenuTextColor">@color/white</item>
+    </style>
+
+</resources>

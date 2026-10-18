@@ -1,0 +1,90 @@
+rules_version = '2';
+
+// Paste this whole file into Firebase Console > Firestore Database > Rules > Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+    function roleOf(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.role;
+    }
+    function isStudent() {
+      return signedIn() && roleOf(request.auth.uid) == 'student';
+    }
+    function isCleaner() {
+      return signedIn() && roleOf(request.auth.uid) == 'cleaner';
+    }
+
+    // Each person can only read/change their own profile document.
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role in ['student', 'cleaner'];
+      allow update: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.role == resource.data.role;
+      allow delete: if false;
+    }
+
+    // Lets a student look up another student by External Booking ID without exposing user documents.
+    match /externalIds/{externalId} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /bookings/{bookingId} {
+      // students see their own bookings, cleaners see open (Pending) ones + their own jobs
+      allow read: if signedIn() && (
+        resource.data.studentId == request.auth.uid ||
+        resource.data.cleanerId == request.auth.uid ||
+        (resource.data.status == 'Pending' && isCleaner())
+      );
+
+      allow create: if isStudent()
+        && request.resource.data.status == 'Pending'
+        && request.resource.data.cleanerId == null
+        && request.resource.data.requestedBy == request.auth.uid;
+
+      allow update: if isCleaner() && (
+        // 1) accept a Pending booking
+        (resource.data.status == 'Pending'
+          && request.resource.data.status == 'In Progress'
+          && request.resource.data.cleanerId == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['status', 'cleanerId', 'cleanerName']))
+        ||
+        // 2) complete YOUR booking, only if the typed passkey matches the secret one
+        (resource.data.status == 'In Progress'
+          && resource.data.cleanerId == request.auth.uid
+          && request.resource.data.status == 'Completed'
+          && request.resource.data.enteredPasskey ==
+               get(/databases/$(database)/documents/bookingSecrets/$(bookingId)).data.passkey
+          && request.resource.data.diff(resource.data).affectedKeys()
+               .hasOnly(['status', 'enteredPasskey']))
+      );
+
+      allow delete: if false;
+    }
+
+    // The real passkey. Clients can write it once when booking, but can never read it back,
+    // so cleaners cannot cheat. The rule above compares against it on the server.
+    match /bookingSecrets/{bookingId} {
+      allow create: if isStudent();
+      allow read, update, delete: if false;
+    }
+
+    match /notifications/{notificationId} {
+      allow read: if signedIn() && resource.data.studentId == request.auth.uid;
+      allow create: if signedIn();
+      allow update, delete: if false;
+    }
+
+    match /problemReports/{reportId} {
+      allow create: if isStudent() && request.resource.data.studentId == request.auth.uid;
+      allow read, update, delete: if false;
+    }
+  }
+}

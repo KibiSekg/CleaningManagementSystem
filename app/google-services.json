@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "221906412922",
+    "firebase_url": "https://cleaningmanagementsystem-855d6-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "cleaningmanagementsystem-855d6",
+    "storage_bucket": "cleaningmanagementsystem-855d6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221906412922:android:e00b2476eadfc1810ee2c3",
+        "android_client_info": {
+          "package_name": "com.southpoint.crms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221906412922-cakc8ei5mit2divblq7uem71340t0bhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAO_IriTfrWwZO3640ZT-w0HTjwRfY1Jlg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "221906412922-cakc8ei5mit2divblq7uem71340t0bhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

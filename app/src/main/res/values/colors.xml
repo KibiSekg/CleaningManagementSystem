@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="sp_blue">#0055A5</color>
+    <color name="sp_blue_light">#E6F0FA</color>
+    <color name="sp_orange">#F7941D</color>
+    <color name="sp_orange_dark">#D9770A</color>
+    <color name="sp_grey_text">#4A4A4A</color>
+    <color name="sp_grey_border">#D5DDE5</color>
+    <color name="sp_error">#D0342C</color>
+    <color name="sp_background">#F5F5F5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="launcher_background">#0055A5</color>
+</resources>
